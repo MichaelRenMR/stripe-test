@@ -24,7 +24,7 @@
   color: black; */
 }
 
-.Products {
+.CartContext.Provider{
   align-items: center; 
   display: flex; 
   min-height: 60vh;
