@@ -5,13 +5,34 @@ import Cart from './Cart';
 import './App.css';
 
 const App = () => {
-  const [cart, setCart] = React.useState([]);
+  const [cart, setCart] = React.useState<any>({});
+
+  // key: product.id 
+  // value: [object, quantity]
   
   const addToCart = (product:any) => {
-    setCart(cart.concat(product));
+    // Check if the product exists in the dictionary 
+      // If it does, add 1 to quantity 
+      // If it doesn't, add the product with quantity 1 
+    console.log(product);
+    console.log(product.id);
+    let prod_id = product.id; 
+    if (prod_id in cart) {
+      console.log("Product in cart"); 
+      console.log(product); 
+      // add 1 to quantity 
+      var oldQuantity = cart[prod_id][1]; 
+      setCart((prevCart: { product: object; }) => ({...prevCart, prod_id: [...prevCart.prod_id, [product, oldQuantity + 1]}))
+    } else {
+      console.log("Product not in cart"); 
+      console.log(product);
+      // initialize with quantity 1
+      // The spread/rest operator "..." is being used to collect all of the values of the previous state, then add the new key-value pair,  keep prev state immutable
+      setCart((prevCart: any) => ({...prevCart, prod_id: [product, 1]}));
+    }
   };
 
-  
+  //cart provider keeps track of state
   return (
     <div className="App">
       <header className="App-header">

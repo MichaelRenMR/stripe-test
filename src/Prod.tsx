@@ -12,7 +12,6 @@ export default function Prod() {
   const {cart, addToCart} = React.useContext(CartContext);
 
   const getProduct = async () => {
-    console.log("hello");
     const prod = fetch('https://api.stripe.com/v1/products', {
       method: 'get',
       headers: {
@@ -37,7 +36,7 @@ export default function Prod() {
       <div className="cardBody"> 
         <h3 className="cardTitle">{product.name}</h3>
         <h5 className="cardText">{product.description}</h5>
-        <button className="btn btn-primary" onClick={() => addToCart(product.name)}>Add to cart</button>
+        <button className="btn btn-primary" onClick={() => addToCart(product)}>Add to cart</button>
       </div>
     </div>);
   }
