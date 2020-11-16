@@ -9,7 +9,7 @@ export default function Prod() {
 
   const [prod, setProd] = useState(""); // making it a string instead of the json object itself prevents excessive rerendering 
 
-  const {cart, addToCart} = React.useContext(CartContext);
+  const {cart, addToCart, removeFromCart} = React.useContext(CartContext);
 
   const getProduct = async () => {
     const prod = fetch('https://api.stripe.com/v1/products', {
@@ -36,7 +36,8 @@ export default function Prod() {
       <div className="cardBody"> 
         <h3 className="cardTitle">{product.name}</h3>
         <h5 className="cardText">{product.description}</h5>
-        <button className="btn btn-primary" onClick={() => addToCart(product)}>Add to cart</button>
+        <button className="btn btn-primary btn-small" onClick={() => addToCart(product)}>Add to cart</button>
+        <button className="btn btn-primary btn-small" onClick={() => removeFromCart(product)}>Remove from cart</button>
       </div>
     </div>);
   }

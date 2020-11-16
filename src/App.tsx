@@ -5,34 +5,43 @@ import Cart from './Cart';
 import './App.css';
 
 const App = () => {
-  const [cart, setCart] = React.useState<any>({});
+  const [cart, setCart] = React.useState<any>(new Map()); // using map instead of object now
 
   // key: product.id 
   // value: [object, quantity]
-  
-  const addToCart = (product:any) => {
-    // Check if the product exists in the dictionary 
-      // If it does, add 1 to quantity 
-      // If it doesn't, add the product with quantity 1 
-    let prod_id = product.id; 
-    console.log("Cart:", cart);
-    if ("prod_id" in cart) {
-      console.log("Product in cart"); 
-      console.log(prod_id); 
-      // add 1 to quantity 
-      console.log(cart["prod_id"]);
-      var oldQuantity = cart["prod_id"][1]; 
-      // setCart((prevCart: { product: object; }) => ({...prevCart, prod_id: [...prevCart.prod_id, [product, oldQuantity + 1]}));
-      setCart((prevCart: any) => ({ ...prevCart, prod_id: [...prevCart.prod_id, [product, oldQuantity + 1]] }))
+  const updateCart = (k:string,v:any) => {  
+    /* 
+    React checks if a component should update by checking if the object before is different from the object after.
+    To force it to update we need to put the old info in a new map so that the objects pass the difference check. 
+    */
+    cart.set(k,v); 
 
-    } else {
-      console.log("Product not in cart"); 
-      console.log(prod_id);
-      // initialize with quantity 1
-      // The spread/rest operator "..." is being used to collect all of the values of the previous state, then add the new key-value pair,  keep prev state immutable
-      setCart((prevCart: any) => ({...prevCart, prod_id: [product, 1]}));
+    if (cart.get(k)[1] === 0) {
+      cart.delete(k);
     }
-  };
+    
+    let newCart = new Map(cart); 
+    setCart(newCart); 
+  }
+
+  const addToCart = (product: any) => {
+    let prod_id:string = product.id; 
+    if (cart.has(prod_id)) {
+      var oldQuantity = cart.get(prod_id)[1];
+      updateCart(prod_id, [product, oldQuantity + 1]); 
+    } else {
+      updateCart(prod_id, [product, 1]);
+    }
+  }
+
+  const removeFromCart = (product: any) => {  //if item quantity = 0, remove key
+    let prod_id: string = product.id;
+    if (cart.has(prod_id)) {
+      var oldQuantity = cart.get(prod_id)[1];
+      updateCart(prod_id, [product, oldQuantity - 1]);
+    }
+  }
+
 
   //cart provider keeps track of state
   return (
@@ -40,7 +49,7 @@ const App = () => {
       <header className="App-header">
        <h1>Product Page</h1>
       </header>
-      <CartContext.Provider value={{cart, addToCart}}>
+      <CartContext.Provider value={{cart, addToCart, removeFromCart}}>
         <div>
           <Product />
           <Cart />

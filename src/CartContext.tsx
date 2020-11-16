@@ -8,8 +8,9 @@ import React from 'react'
 // }
 
 const CartContext = React.createContext({
-  cart: {},
-  addToCart: (product:any) => {}
+  cart: new Map(),
+  addToCart: (product:any) => {},
+  removeFromCart: (product:any) => {}
 });
 
 
