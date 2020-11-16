@@ -9,7 +9,8 @@ const Cart = () => {
   console.log(cart); 
   return (     
     <div>
-      {Object.entries(cart).map((key:any, value) => {return (<h3>{"jajajajaaja"}</h3>)})}
+      {/* {Object.entries(cart).map(([key, value]) => {return (<h3>{key}</h3>)})} */}
+      {Object.values(cart).map((cart: any) => (<h3>hi</h3>))}
     </div>
   );
 }
