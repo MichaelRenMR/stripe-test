@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  flex-wrap: wrap;
 }
 
 .App-logo {
@@ -38,3 +39,41 @@
   color: #61dafb;
 }
 
+#checkout-sidebar {
+  position: fixed;
+  height: 100%;
+  right: 0;
+  top: 0;
+  width: 350px;
+  background-color: grey;
+  transform: translateX(350px);
+  transition: transform 250ms ease-in-out;
+  overflow-y: scroll;
+  padding: 65px 10px 5px 10px;
+  z-index: 98;
+}
+
+#cart-checkbox {
+  display: none;
+}
+
+#cart-img {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 99;
+  width: 50px;
+  height: 60px;
+}
+
+input[type="checkbox"]:checked ~ #checkout-sidebar{
+  transform: translateX(0px);
+}
+
+input[type="checkbox"]:checked ~ #items{
+  width: calc(100% - 350px);
+}
+
+#items {
+  transition: transform 250ms ease-in-out;
+}

@@ -3,12 +3,14 @@ import Product from './Prod';
 import CartContext from './CartContext';
 import Cart from './Cart'; 
 import './App.css';
+import cartimage from './img/cart-img.png';
+import Image from './Image'; 
 
 const App = () => {
   const [cart, setCart] = React.useState<any>(new Map()); // using map instead of object now
 
-  // key: product.id 
-  // value: [object, quantity]
+  // key: price.id 
+  // value: [priceObject, quantity, product.name, product.image]
   const updateCart = (k:string,v:any) => {  
     /* 
     React checks if a component should update by checking if the object before is different from the object after.
@@ -46,13 +48,18 @@ const App = () => {
   //cart provider keeps track of state
   return (
     <div className="App">
-      <header className="App-header">
-       <h1>Product Page</h1>
-      </header>
       <CartContext.Provider value={{cart, addToCart, removeFromCart}}>
-        <div>
+        <input type="checkbox" id="cart-checkbox"/>
+        <label htmlFor="cart-checkbox"><img id="cart-img" src={cartimage}/></label>
+        <div id="checkout-sidebar">
+          {/* //display products */}
+          <Image />
+        </div>  
+        <div id="items">
+          <header className="App-header">
+          <h1>Product Page</h1>
+          </header>
           <Product />
-          <Cart />
         </div>
       </CartContext.Provider>
     </div>

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import CartContext from './CartContext';
+import {Product} from './Types';
 
 //const stripe = require('stripe')('sk_test_51HdnXpA8Jg7sAs064LAhHXEbkhJxHpOAg8J7QiCrJW3U8MK8nT1IYDkZXEH3x6imLDv2FHUs3B1MlLlMIZrnVWks00oFrLTtuv');
 
@@ -7,12 +8,13 @@ const SECRET_KEY:string = 'sk_test_51HdnXpA8Jg7sAs064LAhHXEbkhJxHpOAg8J7QiCrJW3U
 
 export default function Prod() {
 
-  const [prod, setProd] = useState(""); // making it a string instead of the json object itself prevents excessive rerendering 
-
+   // making it a string instead of the json object itself prevents excessive rerendering 
+  const [price, setPrice] = useState("");
+  
   const {cart, addToCart, removeFromCart} = React.useContext(CartContext);
 
-  const getProduct = async () => {
-    const prod = fetch('https://api.stripe.com/v1/products', {
+  const getPrice = async () => {
+    const price = fetch('https://api.stripe.com/v1/prices', {
       method: 'get',
       headers: {
         'Accept': 'application/json',
@@ -20,45 +22,88 @@ export default function Prod() {
         'Authorization': 'Bearer ' + SECRET_KEY
       },
     });
-    return (await prod).json();
+    return (await price).json();
   }
 
-  useEffect(() => {
-    console.log(prod);
-    getProduct().then(data => {setProd(JSON.stringify(data));}); 
-  }, [prod]);
+  useEffect(() => { // todo: maybe construct a mapping between price_id and product:Product here 
+    // console.log(price);
+    getPrice().then(data => {setPrice(JSON.stringify(data));}); 
+  }, [price]);
 
+  const getProductFromPrice = (price:any) => {
+    let prod_id = price.product; 
 
-  const productCard = (product: any) => {
-    return (
-      <div className="card" style={{width:"40rem", height:"50rem", margin:"2rem"}}>
-      <img className="cardImgTop" src={product.images[0]} alt="Umbrella" style={{height:"80%", objectFit:"cover"}}></img>
-      <div className="cardBody"> 
-        <h3 className="cardTitle">{product.name}</h3>
-        <h5 className="cardText">{product.description}</h5>
-        <button className="btn btn-primary btn-small" onClick={() => addToCart(product)}>Add to cart</button>
-        <button className="btn btn-primary btn-small" onClick={() => removeFromCart(product)}>Remove from cart</button>
-      </div>
-    </div>);
+    let prod = ""; 
+
+    const setProd = (new_prod:string) => {
+      prod = new_prod;
+      // console.log(prod);
+    }
+
+    const getProduct = async (prod_id:string) => {
+      const prod = fetch('https://api.stripe.com/v1/products/' + prod_id, {
+        method: 'get',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer ' + SECRET_KEY
+        },
+      });
+      return (await prod).json();
+    }
+    getProduct(prod_id).then(data => {
+      setProd(JSON.stringify(data));
+    }); 
+    return prod; 
   }
 
-  const listProducts = (products: any) => {
-    if (products === "") {
+
+  const productCard = (price: any) => {
+    let prod_string:string = getProductFromPrice(price);
+    // console.log(prod_string);
+    let product:Product = {} as any;
+    if (prod_string != "") {
+      product = JSON.parse(prod_string); 
+      console.log(product.name);
+      return (
+        <div className="card" style={{width:"40rem", height:"50rem", margin:"2rem"}}>
+        <img className="cardImgTop" src={product.images[0]} alt="Umbrella" style={{height:"80%", objectFit:"cover"}}></img>
+        <div className="cardBody"> 
+          <h3 className="cardTitle">{product.name}</h3>
+          <h5 className="cardText">{product.description}</h5>
+          <button className="btn btn-primary btn-small" onClick={() => addToCart(product)}>Add to cart</button>
+          <button className="btn btn-primary btn-small" onClick={() => removeFromCart(product)}>Remove from cart</button>
+        </div>
+      </div>)
+    } else {
+      return
+    }
+  }
+
+  // const listProducts = (product: any) => {
+  //   if (products === "") {
+  //     return ""; 
+  //   } else {
+  //     products = JSON.parse(products); 
+  //   }
+  //   return products.data.map((product: any) => (productCard(product)));
+  // }
+
+  const listPrices = (price: any) => {
+    if (price === "") {
       return ""; 
     } else {
-      products = JSON.parse(products); 
+      price = JSON.parse(price); 
     }
-    return products.data.map((product: any) => (productCard(product)));
+    return price.data.map((price: any) => (productCard(price)));
   }
-
 
   return (
     <div style={{display:"flex"}}>
-      {listProducts(prod)}
+      {listPrices(price)}
     </div>
   );
 }
-
 
 
 
@@ -88,3 +133,20 @@ Updating the context -
     Then you can call the addToCart function anytime
 */
 
+
+  // const getPrice = async () => {
+  //   const price = fetch('https://api.stripe.com/v1/prices', {
+  //     method: 'get',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/x-www-form-urlencoded',
+  //       'Authorization': 'Bearer ' + SECRET_KEY
+  //     },
+  //   });
+  //   return (await price).json();
+  // }
+
+  // useEffect(() => {
+  //   console.log(prod);
+  //   getProduct().then(data => {setProd(JSON.stringify(data));}); 
+  // }, [prod]);
