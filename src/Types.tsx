@@ -16,3 +16,16 @@ export interface Product {
 }
 
 
+export interface Price {
+    id: string
+    active: boolean 
+    currency: string
+    metadata: object 
+    nickname: string 
+    product: string 
+    recurring: object 
+    type: string 
+    unit_amount: number
+}
+
+

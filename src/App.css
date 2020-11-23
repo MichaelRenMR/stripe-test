@@ -8,19 +8,13 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   /* background-color: gray; */
-  min-height: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 50px;
   /* font-size: calc(10px + 2vmin);
   color: black; */
 }
@@ -35,22 +29,18 @@
   background-color: whitesmoke;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
 #checkout-sidebar {
   position: fixed;
   height: 100%;
   right: 0;
   top: 0;
-  width: 350px;
+  width: 40%;
   background-color: grey;
-  transform: translateX(350px);
+  transform: translateX(100%);
   transition: transform 250ms ease-in-out;
-  overflow-y: scroll;
-  padding: 65px 10px 5px 10px;
+  padding: 70px 5px 5px 5px;
   z-index: 98;
+  /* overflow: scroll; */
 }
 
 #cart-checkbox {
@@ -71,9 +61,24 @@ input[type="checkbox"]:checked ~ #checkout-sidebar{
 }
 
 input[type="checkbox"]:checked ~ #items{
-  width: calc(100% - 350px);
+  width: 60%;
 }
 
 #items {
   transition: transform 250ms ease-in-out;
 }
+
+.card {
+  max-width: 100%;
+}
+
+/* @media only screen and (max-width: 600px) {
+  #checkout-sidebar {
+    width: 40%;
+    transform: translateX(100%);
+  }
+  input[type="checkbox"]:checked ~ #items{
+    width: 60%;
+    padding: 65px 5px 5px 5px;
+  }
+} */
