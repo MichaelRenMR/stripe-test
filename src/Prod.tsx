@@ -77,9 +77,7 @@ export default function Prod() {
     }
   })
 
-
   useEffect(() => {
-    console.log("ran");
     setHtml(listPrices(prices, prods)); 
   }, [prodMap]);
 
@@ -94,8 +92,9 @@ export default function Prod() {
           <div className="cardBody"> 
             <h3 className="cardTitle">{product.name}</h3>
             <h5 className="cardText">{product.description}</h5>
-            <button className="btn btn-primary btn-small" onClick={() => addToCart(product)}>Add to cart</button>
-            <button className="btn btn-primary btn-small" onClick={() => removeFromCart(product)}>Remove from cart</button>
+            <p>${(price.unit_amount / 100).toFixed(2)}</p>
+            <button className="btn btn-primary btn-small" onClick={() => addToCart(price, product)}>Add to cart</button>
+            <button className="btn btn-primary btn-small" onClick={() => removeFromCart(price, product)}>Remove from cart</button>
           </div>
         </div>
       )

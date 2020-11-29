@@ -1,10 +1,11 @@
 import React from 'react';
-import Product from './Prod'; 
+import Prod from './Prod'; 
 import CartContext from './CartContext';
 import Cart from './Cart'; 
 import './App.css';
 import cartimage from './img/cart-img.png';
 import Image from './Image'; 
+import {Product, Price} from './Types'; 
 
 const App = () => {
   const [cart, setCart] = React.useState<any>(new Map()); // using map instead of object now
@@ -18,7 +19,7 @@ const App = () => {
     */
     cart.set(k,v); 
 
-    if (cart.get(k)[1] === 0) {
+    if (cart.get(k)[1] === 0) { // if quantity is equal to 0 
       cart.delete(k);
     }
     
@@ -26,21 +27,27 @@ const App = () => {
     setCart(newCart); 
   }
 
-  const addToCart = (product: any) => {
-    let prod_id:string = product.id; 
-    if (cart.has(prod_id)) {
-      var oldQuantity = cart.get(prod_id)[1];
-      updateCart(prod_id, [product, oldQuantity + 1]); 
+  const addToCart = (price: Price, product:Product) => {
+    let price_id:string = price.id; 
+    let product_name = product.name; 
+    let product_image = product.images[0]; 
+    if (cart.has(price_id)) {                
+      var newQuantity = cart.get(price_id)[1] + 1;
+      var totalPrice = price.unit_amount * newQuantity;
+      updateCart(price_id, [totalPrice, newQuantity, product_name, product_image]); 
     } else {
-      updateCart(prod_id, [product, 1]);
+      updateCart(price_id, [price.unit_amount, 1, product_name, product_image]);
     }
   }
 
-  const removeFromCart = (product: any) => {  //if item quantity = 0, remove key
-    let prod_id: string = product.id;
-    if (cart.has(prod_id)) {
-      var oldQuantity = cart.get(prod_id)[1];
-      updateCart(prod_id, [product, oldQuantity - 1]);
+  const removeFromCart = (price: Price, product: Product) => {  //if item quantity = 0, remove key
+    let price_id: string = price.id;
+    let product_name = product.name; 
+    let product_image = product.images[0]; 
+    if (cart.has(price_id)) {
+      var newQuantity = cart.get(price_id)[1] - 1;
+      var totalPrice = price.unit_amount * newQuantity;
+      updateCart(price_id, [totalPrice, newQuantity, product_name, product_image]);
     }
   }
 
@@ -59,7 +66,7 @@ const App = () => {
           <header className="App-header">
           <h1>Product Page</h1>
           </header>
-          <Product />
+          <Prod />
         </div>
       </CartContext.Provider>
     </div>

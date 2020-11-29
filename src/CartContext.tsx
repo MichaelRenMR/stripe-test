@@ -1,5 +1,5 @@
 import React from 'react' 
-
+import { Product, Price } from './Types'; 
 
 
 // export interface CartInterface {
@@ -7,11 +7,13 @@ import React from 'react'
 //   addToCart: (product: string, price: number) => void;
 // }
 
+  // key: price.id 
+  // value: [priceObject, quantity, product.name, product.image]
 const CartContext = React.createContext({
   cart: new Map(),
-  addToCart: (product:any) => {},
-  removeFromCart: (product:any) => {}
-});
+  addToCart: (price: Price, product: Product) => {},
+  removeFromCart: (price: Price, product: Product) => {}
+}); 
 
 
 export default CartContext;
