@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import CartContext from './CartContext';
 import {Product, Price} from './Types';
+import {loadStripe} from '@stripe/stripe-js'
 
 //const stripe = require('stripe')('sk_test_51HdnXpA8Jg7sAs064LAhHXEbkhJxHpOAg8J7QiCrJW3U8MK8nT1IYDkZXEH3x6imLDv2FHUs3B1MlLlMIZrnVWks00oFrLTtuv');
 

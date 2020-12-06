@@ -5,6 +5,7 @@ import Cart from './Cart';
 import './App.css';
 import cartimage from './img/cart-img.png';
 import Image from './Image'; 
+import Checkout from './Checkout'; 
 import {Product, Price} from './Types'; 
 
 const App = () => {
@@ -61,6 +62,7 @@ const App = () => {
         <div id="checkout-sidebar">
           {/* //display products */}
           <Image />
+          <Checkout/>
         </div>  
         <div id="items">
           <header className="App-header">
