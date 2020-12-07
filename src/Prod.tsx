@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import CartContext from './CartContext';
 import {Product, Price} from './Types';
-import {loadStripe} from '@stripe/stripe-js'
+import {loadStripe} from '@stripe/stripe-js';
 
 //const stripe = require('stripe')('sk_test_51HdnXpA8Jg7sAs064LAhHXEbkhJxHpOAg8J7QiCrJW3U8MK8nT1IYDkZXEH3x6imLDv2FHUs3B1MlLlMIZrnVWks00oFrLTtuv');
 
 const SECRET_KEY:string = 'sk_test_51HdnXpA8Jg7sAs064LAhHXEbkhJxHpOAg8J7QiCrJW3U8MK8nT1IYDkZXEH3x6imLDv2FHUs3B1MlLlMIZrnVWks00oFrLTtuv';
+// require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+console.log('environment prod: ', process.env);
 
 export default function Prod() {
 
@@ -24,7 +28,7 @@ export default function Prod() {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Bearer ' + SECRET_KEY
+        'Authorization': 'Bearer ' + process.env.REACT_APP_STRIPE_SECRET_KEY,
       },
     });
     return (await price).json();

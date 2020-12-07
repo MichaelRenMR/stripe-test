@@ -8,6 +8,9 @@ import Image from './Image';
 import Checkout from './Checkout'; 
 import {Product, Price} from './Types'; 
 
+require('dotenv').config();
+console.log('environment: ', process.env);
+
 const App = () => {
   const [cart, setCart] = React.useState<any>(new Map()); // using map instead of object now
 
